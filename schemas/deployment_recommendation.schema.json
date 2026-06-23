@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://robolineage.github.io/schemas/deployment_recommendation.schema.json",
+  "title": "Deployment recommendation artifact",
+  "type": "object",
+  "required": ["artifact_id", "artifact_type", "schema_version", "created_at", "producer", "parents", "content_hash", "content"],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "artifact_type": { "const": "deployment_recommendation" },
+    "schema_version": { "type": "string" },
+    "created_at": { "type": "string" },
+    "producer": { "type": "string" },
+    "parents": { "type": "array", "items": { "type": "string" } },
+    "content_hash": { "type": "string" },
+    "content": {
+      "type": "object",
+      "required": ["policy_id", "recommendation", "supporting_evidence"],
+      "properties": {
+        "policy_id": { "type": "string" },
+        "recommendation": { "enum": ["collect_more", "hold", "rollback", "release_candidate"] },
+        "supporting_evidence": { "type": "array", "items": { "type": "string" } },
+        "remaining_risks": { "type": "array", "items": { "type": "string" } },
+        "operator_confirmation_required": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

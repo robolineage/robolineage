@@ -1,0 +1,138 @@
+[
+  {
+    "artifact_id": "robot_profile.arx_tabletop.v1",
+    "artifact_type": "robot_profile",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:00:00Z",
+    "producer": "robot_onboarding_agent",
+    "parents": [],
+    "content_hash": "sha256:example-robot-profile",
+    "content": {
+      "robot_name": "example_tabletop_arm",
+      "embodiment": "single_arm_gripper",
+      "workspace": "tabletop_manipulation",
+      "streams": {
+        "primary_camera": "/camera/front/image",
+        "wrist_camera": "/camera/wrist/image",
+        "robot_state": "/robot/state",
+        "action_command": "/policy/action",
+        "episode_clock": "/episode/time"
+      }
+    }
+  },
+  {
+    "artifact_id": "task_config.stack_red_on_blue.v1",
+    "artifact_type": "task_config",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:05:00Z",
+    "producer": "task_config_agent",
+    "parents": ["robot_profile.arx_tabletop.v1"],
+    "content_hash": "sha256:example-taskconfig",
+    "content": {
+      "task_name": "stack_red_on_blue",
+      "goal": "place the red cube on the blue cube",
+      "phases": ["approach_red", "grasp_red", "move_to_blue", "release", "settle"],
+      "success_criteria": ["red cube is resting on the blue cube after settle"],
+      "failure_modes": ["missed_grasp", "premature_release", "late_or_no_release"]
+    }
+  },
+  {
+    "artifact_id": "rollout.r042",
+    "artifact_type": "rollout_manifest",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:12:00Z",
+    "producer": "raw_capture",
+    "parents": ["robot_profile.arx_tabletop.v1", "task_config.stack_red_on_blue.v1"],
+    "content_hash": "sha256:example-rollout",
+    "content": {
+      "rollout_id": "r042",
+      "robot_profile_id": "robot_profile.arx_tabletop.v1",
+      "task_config_id": "task_config.stack_red_on_blue.v1",
+      "started_at": "2026-06-01T10:11:10Z",
+      "ended_at": "2026-06-01T10:11:28Z",
+      "raw_evidence": [
+        {
+          "kind": "front_video",
+          "uri": "raw/r042/front.mp4",
+          "hash": "sha256:example-front-video"
+        },
+        {
+          "kind": "state_trace",
+          "uri": "raw/r042/state.jsonl",
+          "hash": "sha256:example-state-trace"
+        }
+      ]
+    }
+  },
+  {
+    "artifact_id": "vsa.r042.window03",
+    "artifact_type": "vsa_snapshot",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:11:19Z",
+    "producer": "online_vsa",
+    "parents": ["rollout.r042"],
+    "content_hash": "sha256:example-vsa",
+    "content": {
+      "rollout_id": "r042",
+      "time_range": { "start_sec": 8.0, "end_sec": 11.5 },
+      "phase": "release",
+      "confidence": 0.76,
+      "evidence": ["gripper is above the blue cube", "red cube remains in gripper"],
+      "uncertainty": ["release may be delayed"]
+    }
+  },
+  {
+    "artifact_id": "review.r042",
+    "artifact_type": "post_rollout_review",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:14:00Z",
+    "producer": "post_rollout_review_agent",
+    "parents": ["rollout.r042", "vsa.r042.window03"],
+    "content_hash": "sha256:example-review",
+    "content": {
+      "rollout_id": "r042",
+      "outcome": "failure",
+      "primary_failure_phase": "late_or_no_release",
+      "admission_recommendation": "failure_pool",
+      "evidence": [
+        "final observation shows red cube still held by gripper",
+        "task success criterion is unmet"
+      ],
+      "terminal_observation": "robot retracts while still holding the red cube"
+    }
+  },
+  {
+    "artifact_id": "decision.r042",
+    "artifact_type": "dataset_decision",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:14:30Z",
+    "producer": "data_governance_agent",
+    "parents": ["review.r042"],
+    "content_hash": "sha256:example-decision",
+    "content": {
+      "rollout_id": "r042",
+      "training_eligibility": false,
+      "route": "failure_pool",
+      "reason": "useful release failure evidence, not primary imitation data",
+      "split": "none"
+    }
+  },
+  {
+    "artifact_id": "brief.stack_red_on_blue.round2",
+    "artifact_type": "next_collection_brief",
+    "schema_version": "0.1",
+    "created_at": "2026-06-01T10:20:00Z",
+    "producer": "master_agent",
+    "parents": ["decision.r042"],
+    "content_hash": "sha256:example-brief",
+    "content": {
+      "summary": "Recent failures concentrate in late or missing release after centered alignment.",
+      "recommended_collection": [
+        "collect successful release timing variants after confirmed alignment",
+        "include short bounded dwell before release"
+      ],
+      "supporting_evidence": ["review.r042", "vsa.r042.window03"],
+      "risks": ["avoid collecting longer dwell examples that teach delayed release"]
+    }
+  }
+]

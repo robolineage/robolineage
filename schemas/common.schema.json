@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://robolineage.github.io/schemas/common.schema.json",
+  "title": "RoboLineage common artifact fields",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "artifact_type",
+    "schema_version",
+    "created_at",
+    "producer",
+    "parents",
+    "content_hash",
+    "content"
+  ],
+  "properties": {
+    "artifact_id": { "type": "string", "minLength": 1 },
+    "artifact_type": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "producer": { "type": "string", "minLength": 1 },
+    "parents": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "content_hash": { "type": "string", "minLength": 1 },
+    "content": { "type": "object" }
+  },
+  "additionalProperties": false
+}

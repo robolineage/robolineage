@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use RoboLineage, please cite the paper."
+title: "RoboLineage: Agent-Native Data Lifecycle Governance Across Robot Policy Iterations"
+authors:
+  - family-names: Luo
+    given-names: Qian
+  - family-names: Guo
+    given-names: Wentao
+  - family-names: Qin
+    given-names: Zhennan
+  - family-names: Guo
+    given-names: Nanchun
+  - family-names: Zhao
+    given-names: Yunhan
+  - family-names: Ma
+    given-names: Yi
+  - family-names: Yang
+    given-names: Yanchao
+year: 2026
+url: "https://robolineage.github.io/"
+repository-code: "https://github.com/robolineage/robolineage"
+preferred-citation:
+  type: article
+  title: "RoboLineage: Agent-Native Data Lifecycle Governance Across Robot Policy Iterations"
+  authors:
+    - family-names: Luo
+      given-names: Qian
+    - family-names: Guo
+      given-names: Wentao
+    - family-names: Qin
+      given-names: Zhennan
+    - family-names: Guo
+      given-names: Nanchun
+    - family-names: Zhao
+      given-names: Yunhan
+    - family-names: Ma
+      given-names: Yi
+    - family-names: Yang
+      given-names: Yanchao
+  journal: "arXiv preprint arXiv:2606.22142"
+  year: 2026
+  url: "https://arxiv.org/abs/2606.22142"

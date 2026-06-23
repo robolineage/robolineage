@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://robolineage.github.io/schemas/policy_metadata.schema.json",
+  "title": "Policy metadata artifact",
+  "type": "object",
+  "required": ["artifact_id", "artifact_type", "schema_version", "created_at", "producer", "parents", "content_hash", "content"],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "artifact_type": { "const": "policy_metadata" },
+    "schema_version": { "type": "string" },
+    "created_at": { "type": "string" },
+    "producer": { "type": "string" },
+    "parents": { "type": "array", "items": { "type": "string" } },
+    "content_hash": { "type": "string" },
+    "content": {
+      "type": "object",
+      "required": ["policy_id", "training_run_id", "checkpoint_uri"],
+      "properties": {
+        "policy_id": { "type": "string" },
+        "parent_policy_id": { "type": "string" },
+        "training_run_id": { "type": "string" },
+        "dataset_lock_id": { "type": "string" },
+        "checkpoint_uri": { "type": "string" },
+        "checkpoint_hash": { "type": "string" },
+        "metrics": { "type": "object" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

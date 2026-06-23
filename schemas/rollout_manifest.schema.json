@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://robolineage.github.io/schemas/rollout_manifest.schema.json",
+  "title": "Rollout manifest artifact",
+  "type": "object",
+  "required": ["artifact_id", "artifact_type", "schema_version", "created_at", "producer", "parents", "content_hash", "content"],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "artifact_type": { "const": "rollout_manifest" },
+    "schema_version": { "type": "string" },
+    "created_at": { "type": "string" },
+    "producer": { "type": "string" },
+    "parents": { "type": "array", "items": { "type": "string" } },
+    "content_hash": { "type": "string" },
+    "content": {
+      "type": "object",
+      "required": ["rollout_id", "robot_profile_id", "task_config_id", "started_at", "ended_at", "raw_evidence"],
+      "properties": {
+        "rollout_id": { "type": "string" },
+        "robot_profile_id": { "type": "string" },
+        "task_config_id": { "type": "string" },
+        "started_at": { "type": "string" },
+        "ended_at": { "type": "string" },
+        "operator_id": { "type": "string" },
+        "raw_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["kind", "uri", "hash"],
+            "properties": {
+              "kind": { "type": "string" },
+              "uri": { "type": "string" },
+              "hash": { "type": "string" }
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
