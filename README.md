@@ -1,8 +1,7 @@
-# RoboLineage
-
-<p align="center">
-  <img src="assets/brand/robolineage_logo_180.png" alt="RoboLineage logo" width="120">
-</p>
+<h1>
+  <img src="assets/brand/robolineage_logo_180.png" alt="RoboLineage logo" width="42">
+  RoboLineage
+</h1>
 
 RoboLineage is an agent-native data lifecycle governance system for robot policy
 iteration. It provides a portable lifecycle interface that links rollout
