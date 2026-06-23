@@ -73,6 +73,12 @@ memory.
   for the artifact boundary.
 - Read [docs/vsa_post_review.md](docs/vsa_post_review.md) for the online Visual
   Snapshot Agent and asynchronous post-rollout review pipeline.
+- Read [docs/artifact_walkthrough.md](docs/artifact_walkthrough.md) for a
+  step-by-step explanation of the mini lifecycle example.
+- Read [docs/integration_path.md](docs/integration_path.md) for how to connect a
+  new robot-learning workflow to the artifact interface.
+- Read [docs/release_plan.md](docs/release_plan.md) for the staged public release
+  plan.
 - Inspect [examples/mini_lifecycle/artifact_trace.example.json](examples/mini_lifecycle/artifact_trace.example.json)
   for a compact example of linked artifacts.
 
