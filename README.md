@@ -51,6 +51,16 @@ static review.
 - [ ] Upgraded agent modules for reward/progress signals, failure memory, and
       closed-loop data improvement.
 
+## Frontend Console
+
+The Vue console exposes robot onboarding, source-stream checks, lifecycle review,
+Data Health, and Master Agent summaries through the same artifact interface used
+by the backend runtime.
+
+<p align="center">
+  <img src="assets/figures/frontend_console_preview.png" alt="RoboLineage frontend console preview" width="760">
+</p>
+
 ## Quickstart
 
 ```bash
