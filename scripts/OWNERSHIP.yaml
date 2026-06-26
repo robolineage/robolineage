@@ -129,7 +129,6 @@ shared:
   - README.md                  # repo-root README, jointly maintained
   - pyproject.toml
   - .gitignore
-  - .markdownlint.json
   - .editorconfig
   - .gitattributes
   - .nvmrc

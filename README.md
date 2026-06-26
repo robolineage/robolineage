@@ -14,7 +14,9 @@ iteration traceable across time.
 [arXiv](https://arxiv.org/abs/2606.22142) |
 [PDF](https://arxiv.org/pdf/2606.22142)
 
-![RoboLineage teaser](assets/figures/fig1.png)
+<p align="center">
+  <img src="assets/figures/fig1.png" alt="RoboLineage teaser" width="680">
+</p>
 
 ## Core Idea
 
@@ -142,17 +144,29 @@ expert memory.
 
 ## Where to Start
 
-- Read [docs/overview.md](docs/overview.md) for the system-level view.
-- Read [docs/lifecycle_artifact_contract.md](docs/lifecycle_artifact_contract.md)
-  for the artifact boundary.
-- Read [docs/vsa_post_review.md](docs/vsa_post_review.md) for the online VSA
-  and asynchronous post-rollout review pipeline.
-- Read [docs/training_integration.md](docs/training_integration.md) for training
-  framework profiles and dataset adapters.
-- Read [docs/reproducibility.md](docs/reproducibility.md) for reproduction
-  boundaries.
-- Inspect [examples/mini_lifecycle](examples/mini_lifecycle) for a compact
-  linked artifact trace.
+- System view: [docs/overview.md](docs/overview.md),
+  [docs/agent_roles.md](docs/agent_roles.md), and
+  [docs/operator_workflow.md](docs/operator_workflow.md).
+- Artifact contract: [docs/lifecycle_artifact_contract.md](docs/lifecycle_artifact_contract.md),
+  [docs/artifact_contracts.md](docs/artifact_contracts.md),
+  [schemas/](schemas/), and [examples/mini_lifecycle](examples/mini_lifecycle).
+- Robot and task setup: [docs/robot_onboarding.md](docs/robot_onboarding.md),
+  [configs/robot_profiles/](configs/robot_profiles/), and
+  [configs/training_frameworks/](configs/training_frameworks/).
+- Review pipeline: [docs/vsa_post_review.md](docs/vsa_post_review.md),
+  [docs/dataset_governance.md](docs/dataset_governance.md), and
+  [prompts/](prompts/).
+- Training and iteration: [docs/training_integration.md](docs/training_integration.md),
+  [docs/evaluation_and_recollection.md](docs/evaluation_and_recollection.md),
+  and [docs/reproducibility.md](docs/reproducibility.md).
+- Runtime entry points: [src/](src/), [frontend/README.md](frontend/README.md),
+  [run.sh](run.sh), and [scripts/](scripts/).
+- Additional references: [docs/artifact_walkthrough.md](docs/artifact_walkthrough.md),
+  [docs/prompt_contracts.md](docs/prompt_contracts.md),
+  [docs/integration_path.md](docs/integration_path.md),
+  [docs/reproducibility_scope.md](docs/reproducibility_scope.md),
+  [docs/deployment/](docs/deployment/), [AGENTS.md](AGENTS.md), and
+  [CITATION.cff](CITATION.cff).
 
 ## Static Checks
 
