@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/snapshot.schema.json",
+  "title": "RoboLineage SnapshotAssessment",
+  "description": "One JSONL line of snapshots.jsonl (or one row of a record-per-line stream). Mirrors robolineage_contracts.agents.SnapshotAssessment.",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "frame_id",
+    "progress",
+    "risk_level",
+    "phase",
+    "imminent_failure",
+    "confidence",
+    "needs_review",
+    "raw_response"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "timestamp": {"type": "number", "minimum": 0},
+    "frame_id": {"type": "integer", "minimum": 0},
+    "progress": {"enum": ["advancing", "stalled", "regressing", "unknown"]},
+    "risk_level": {"enum": ["low", "medium", "high", "unknown"]},
+    "phase": {"type": "string"},
+    "imminent_failure": {"type": "boolean"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "needs_review": {"type": "boolean"},
+    "raw_response": {"type": "string"},
+    "trigger": {
+      "oneOf": [
+        {"type": "null"},
+        {"enum": [
+          "sequence_start",
+          "gripper_close",
+          "gripper_open",
+          "gripper_burst",
+          "contact_transition",
+          "still_start",
+          "motion_resume",
+          "periodic_sample",
+          "heartbeat",
+          "final_observation"
+        ]}
+      ]
+    },
+    "frame_index_range": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 0},
+          "minItems": 2,
+          "maxItems": 2
+        }
+      ]
+    },
+    "vlm_meta": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "object"}
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "schema_version": "RoboLineage.master_review.v1",
+  "stage": "post_evaluation",
+  "summary": "The new policy fixed most OOD grasp failures. The next blocker is premature release.",
+  "next_action": "collect centered pre-release and bounded-dwell release examples",
+  "risk": "medium"
+}

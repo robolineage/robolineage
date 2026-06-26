@@ -1,0 +1,47 @@
+name: lerobot_vla_finetune
+framework_type: lerobot_vla
+adapter_version: "0.2"
+repo_root: /path/to/lerobot-or-vla/repository
+
+staging:
+  selected_rollouts_file: "{staging_dir}/selected_rollouts.json"
+
+dataset_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - tools/export_lerobot_dataset.py
+    - --robolineage-selection
+    - "{selected_rollouts_file}"
+    - --output
+    - "{dataset_output}"
+
+train_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - finetune.py
+    - --dataset
+    - "{dataset_output}"
+    - --output-dir
+    - "{checkpoint_dir}"
+
+eval_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - evaluate_policy.py
+    - --policy
+    - "{checkpoint_path}"
+    - --metrics-out
+    - "{eval_output}/result.json"
+
+outputs:
+  checkpoint_glob: "{checkpoint_dir}/*.{pt,pth,ckpt}"
+  train_log: "{checkpoint_dir}/training.log"
+  eval_result: "{eval_output}/result.json"
+
+log_patterns:
+  step: "global_step=(\\d+)"
+  loss: "train_loss=([0-9.]+)"
+  success_rate: "eval_success=([0-9.]+)"

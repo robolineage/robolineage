@@ -1,35 +1,24 @@
 # RoboLineage Overview
 
-RoboLineage defines a lifecycle layer for robot policy iteration. Its purpose is
-to keep the relationship between data collection, review, training, evaluation,
-and recollection explicit as robots, tasks, and policy learners change.
+RoboLineage treats robot policy iteration as a data lifecycle. Each consequential transition is written as a typed artifact: rollouts become reviewed evidence, reviewed evidence becomes dataset decisions, dataset updates become locks, locks bind training runs, training runs produce policy metadata, evaluations produce summaries, and deployment recommendations become the next lifecycle transition.
 
-The interface is built around typed lifecycle artifacts. A rollout is not only a
-video or trajectory file; it is linked to a robot profile, task contract,
-semantic evidence, review decision, dataset decision, training record,
-evaluation summary, and next-collection brief. This turns policy iteration into
-a traceable sequence rather than a set of disconnected files.
+Agents are lifecycle workers. They interpret visual evidence, task contracts, logs, and evaluation summaries, but their outputs become state only through validated artifacts. Raw robot data remains the source of truth.
 
-## Main Stages
+## Main Lanes
 
-1. **Robot and task grounding.** A robot profile and task contract map local
-   camera streams, robot state, action channels, task phases, success criteria,
-   and risk events into common artifact fields.
-2. **Rollout capture.** Raw rollout evidence is recorded as the source of truth.
-   Semantic interpretation is allowed to run beside capture but does not block
-   the raw stream.
-3. **Visual snapshot and post-rollout review.** Online snapshots write sparse
-   task relevant anchors. Post-rollout review reads raw evidence, snapshots, and
-   terminal observations to produce a governed review artifact.
-4. **Dataset governance.** Review outcomes are converted into dataset decisions,
-   failure pools, exclusion records, and dataset locks.
-5. **Training integration.** Accepted data is adapted to the selected training
-   stack and linked to the resulting training run and policy metadata.
-6. **Evaluation and recollection.** Evaluation summaries and data-health state
-   become next-collection briefs for targeted improvement.
+1. Raw rollout capture records source-of-truth data and never waits for VLM calls.
+2. Online VSA writes sparse semantic anchors during collection.
+3. Post-rollout review drains evidence asynchronously and prepares governed outputs.
 
-## Design Principle
+## Main Agents
 
-Agents perform semantic and integration work. Lifecycle state is carried by
-artifacts. This separation lets the system use multimodal model interpretation
-without turning free-form model output into hidden training or deployment state.
+- Robot Onboarding Agent translates a robot profile into runtime bindings; an optional ROS2 topic probe helps operators build new profiles.
+- Task Config Agent converts a task description into phase, success, and risk contracts.
+- Online Visual Snapshot Agent records phase, risk, and event anchors.
+- Post-Rollout Review Agent performs packetized review after a rollout closes.
+- Data Governance Agent separates review outcome from training eligibility.
+- Data Health Agent summarizes dataset readiness and coverage gaps.
+- Framework Discovery and Dataset Adapter agents connect accepted data to existing learners through external command profiles.
+- Training Monitor and Version Governance agents bind training runs to dataset locks and policy metadata.
+- Policy Evaluation and Deployment Governance agents summarize evaluation evidence.
+- Master Agent maintains cross-iteration summaries and next-action state.

@@ -1,0 +1,11 @@
+<CycloneDDS>
+  <Domain>
+    <General>
+      <Interfaces>
+        <!-- Replace with the robot workstation interface when needed, e.g.
+             <NetworkInterface address="ROBOT_WORKSTATION_IP"/> -->
+        <NetworkInterface autodetermine="true"/>
+      </Interfaces>
+    </General>
+  </Domain>
+</CycloneDDS>

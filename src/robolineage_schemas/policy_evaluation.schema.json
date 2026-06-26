@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/policy_evaluation.schema.json",
+  "title": "RoboLineage Policy Evaluation",
+  "type": "object",
+  "required": ["schema_version", "agent_version", "rollout_id", "final_success", "phase_weakness", "failure_type_counts", "recommended_next_action", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "agent_version": {"type": "string"},
+    "rollout_id": {"type": "string"},
+    "evaluation_session_id": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "evaluation_mode": {"type": "string"},
+    "policy_version": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "final_success": {"type": "boolean"},
+    "success_status": {"type": "string"},
+    "success_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "phase_weakness": {"type": "array", "items": {"type": "object"}},
+    "failure_type_counts": {"type": "object", "additionalProperties": {"type": "integer"}},
+    "failure_events": {"type": "array", "items": {"type": "object"}},
+    "retry_events": {"type": "array", "items": {"type": "object"}},
+    "recommended_next_action": {"type": "string"},
+    "created_at": {"type": "string"}
+  }
+}

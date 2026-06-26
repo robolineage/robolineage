@@ -1,0 +1,60 @@
+# RoboLineage generic launcher config.
+#
+# This config intentionally does not bind any robot-specific ROS topics. Start
+# RoboLineage with it, then select/activate a robot profile from the Robot Onboard page.
+
+rollout:
+  task_id: robolineage_default
+  operator_id: robolineage_default
+  mode: C1
+
+recorder:
+  output_dir: data/rollouts
+  camera_names: [camera_h, camera_r]
+
+services:
+  data_source: true       # deferred until a robot profile provides streams
+  session: true
+  vsa: true               # skipped until task_config_path is created
+  post_review: true
+  health_check: true
+
+tuning:
+  ring_capacity: 120
+  still_threshold: 3e-4
+  still_min_frames: 25
+  gripper_close_threshold: -1.0
+  rotation_weight: 0.2
+  smoothing_window: 10
+  motion_resume_threshold: 8e-4
+  context_frames: 15
+  max_keyframes: 3
+  idle_timeout: 10.0
+  periodic_interval_sec: 2.0
+  heartbeat_interval: 5.0
+  merge_window_sec: 1.0
+  final_settle_sec: 1.0
+  max_vlm_windows_per_rollout: null
+  vlm_workers: 1
+  strong_prior_margin: 0.35
+  prior_sticky_frames: 2
+
+vsa:
+  camera_topic: camera/primary/color
+  arm_topic: robot/active/state
+  task_config_path: null
+  output_jsonl_path: null
+  max_events: null
+
+vlm:
+  timeout: 20.0
+  max_output_tokens: 256
+
+post_review:
+  use_vlm: true
+  idle_delay_sec: 5.0
+  max_review_images: 12
+
+health:
+  port: 8081
+  bind: 0.0.0.0

@@ -1,0 +1,10 @@
+{
+  "schema_version": "RoboLineage.policy_meta.v1",
+  "policy_id": "stack_red_on_blue_dp_v2",
+  "policy_family": "DiffusionPolicy",
+  "trained_on_dataset": "stack_red_on_blue_v2",
+  "parent_policy": "stack_red_on_blue_dp_v1",
+  "checkpoint_path": "checkpoints/stack_red_on_blue_dp_v2/policy.ckpt",
+  "training_command": "python train.py --config stack_red_on_blue.yaml",
+  "created_at": "2026-06-03T00:30:00Z"
+}

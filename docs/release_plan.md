@@ -1,23 +1,28 @@
-# Release Plan
+# Release Status
 
-RoboLineage is released progressively so the public interface stays stable while
-runtime components are cleaned and documented.
+RoboLineage is released as a research runtime and lifecycle artifact interface.
+The repository is meant to be useful both as runnable code on an Ubuntu/ROS2
+robot workstation and as a reference for the artifact contract.
 
-## Available Now
+## Included Now
 
 - Lifecycle artifact schemas.
 - Prompt contracts for artifact-producing agents.
-- Minimal artifact examples.
-- Design notes for robot onboarding, review, data governance, training
-  integration, evaluation, and recollection.
+- Mini lifecycle artifact examples.
+- Robot profiles and profile-guided ROS2 topic binding.
+- Raw rollout capture hooks and online VSA.
+- Asynchronous post-rollout review and dataset governance.
+- Dataset locks, training integration utilities, evaluation artifacts, and
+  deployment recommendation records.
+- FastAPI backend and Vue lifecycle console.
+- Static checks and tests for the runtime contracts.
 
-## Planned Additions
+## Coming Next
 
-- Schema validators and artifact scoring scripts.
 - Replay examples with mock model routes.
-- ROS2/runtime integration and frontend console components.
-- Training adapters and evaluation tools.
+- Broader adapter examples and packaged scoring utilities.
 - Additional real-robot examples.
+- More local-model route examples.
 
-The release plan follows the same principle as the system: keep the lifecycle
-contract stable, then expand the runtime around it.
+The release will keep the lifecycle contract stable while expanding the runtime
+around more robots, training stacks, and model routes.

@@ -1,0 +1,9 @@
+{
+  "schema_version": "RoboLineage.eval_summary.v1",
+  "policy_id": "stack_red_on_blue_dp_v2",
+  "task_id": "stack_red_on_blue",
+  "trials": 60,
+  "successes": 49,
+  "success_rate": 0.817,
+  "dominant_failure": "premature_release"
+}

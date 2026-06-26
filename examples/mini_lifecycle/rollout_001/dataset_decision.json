@@ -1,0 +1,9 @@
+{
+  "schema_version": "RoboLineage.dataset_decision.v1",
+  "rollout_id": "rollout_001",
+  "decision": "failure_pool",
+  "accepted_for_training": false,
+  "review_priority": "normal",
+  "failure_pool": true,
+  "reason": "Useful failure evidence, but not a primary imitation demonstration."
+}

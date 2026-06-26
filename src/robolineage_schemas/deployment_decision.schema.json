@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/deployment_decision.schema.json",
+  "title": "RoboLineage Deployment Decision",
+  "type": "object",
+  "required": ["schema_version", "agent_version", "decision", "gating_result", "reasons", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "agent_version": {"type": "string"},
+    "session_id": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "policy_version": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "decision": {"enum": ["deploy_recommended", "collect_more_data", "hold", "rollback_recommended"]},
+    "gating_result": {"enum": ["pass", "fail", "pending"]},
+    "success_rate": {"oneOf": [{"type": "null"}, {"type": "number", "minimum": 0, "maximum": 1}]},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "created_at": {"type": "string"}
+  }
+}

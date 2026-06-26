@@ -1,0 +1,49 @@
+name: act_hdf5_action_chunking
+framework_type: act
+adapter_version: "0.2"
+repo_root: /path/to/act/repository
+
+staging:
+  selected_rollouts_file: "{staging_dir}/selected_rollouts.json"
+
+dataset_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - scripts/build_act_dataset.py
+    - --selected-rollouts
+    - "{selected_rollouts_file}"
+    - --output-dir
+    - "{dataset_output}"
+    - --target-hz
+    - "30"
+
+train_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - train_act.py
+    - --dataset-dir
+    - "{dataset_output}"
+    - --ckpt-dir
+    - "{checkpoint_dir}"
+
+eval_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - eval_act.py
+    - --checkpoint
+    - "{checkpoint_path}"
+    - --output
+    - "{eval_output}"
+
+outputs:
+  checkpoint_glob: "{checkpoint_dir}/policy_best.ckpt"
+  train_log: "{checkpoint_dir}/training.log"
+  eval_result: "{eval_output}/result.json"
+
+log_patterns:
+  step: "step=(\\d+)"
+  loss: "loss=([0-9.]+)"
+  success_rate: "success_rate=([0-9.]+)"

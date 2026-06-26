@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/collection_recommendation.schema.json",
+  "title": "RoboLineage Collection Recommendation",
+  "type": "object",
+  "required": ["schema_version", "agent_version", "scope", "recommended_mode", "focus_phases", "focus_failure_modes", "rationale", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "agent_version": {"type": "string"},
+    "scope": {"enum": ["rollout", "session"]},
+    "rollout_id": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "session_id": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "policy_version": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "recommended_mode": {"type": "string"},
+    "focus_phases": {"type": "array", "items": {"type": "string"}},
+    "focus_failure_modes": {"type": "array", "items": {"type": "string"}},
+    "rationale": {"type": "string"},
+    "created_at": {"type": "string"}
+  }
+}

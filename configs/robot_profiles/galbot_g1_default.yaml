@@ -1,0 +1,100 @@
+schema_version: RoboLineage.robot_profile.v1
+robot_id: galbot_g1_default
+display_name: GALBOT G1 sanitized ROS2 profile
+description: >
+  Sanitized example profile for a GALBOT G1 VLA/LeRobot-style workflow. Replace
+  topic names and message field mappings with the lab deployment values before use.
+
+connection:
+  type: ros2
+  ros_domain_id: 0
+  namespace: /galbot_g1
+  spin_threads: 2
+
+capabilities:
+  read_only: true
+  policy_drive: false
+  ar_overlay: false
+
+streams:
+  color_images:
+    head_color:
+      role: primary
+      topic: /galbot_g1/camera/head/color/image_raw/compressed
+      msg_type: sensor_msgs/msg/CompressedImage
+      transport: compressed
+      qos: sensor_data
+      canonical_topic: camera/primary/color
+      stream_id: cam/head/color
+      required: true
+    left_wrist_color:
+      role: left_wrist_aux
+      topic: /galbot_g1/camera/left_wrist/color/image_raw/compressed
+      msg_type: sensor_msgs/msg/CompressedImage
+      transport: compressed
+      qos: sensor_data
+      canonical_topic: camera/left_wrist/color
+      stream_id: cam/left_wrist/color
+      required: false
+    right_wrist_color:
+      role: right_wrist_aux
+      topic: /galbot_g1/camera/right_wrist/color/image_raw/compressed
+      msg_type: sensor_msgs/msg/CompressedImage
+      transport: compressed
+      qos: sensor_data
+      canonical_topic: camera/right_wrist/color
+      stream_id: cam/right_wrist/color
+      required: false
+
+  robot_states:
+    active_arm:
+      role: active_manipulator
+      topic: /galbot_g1/arms/right/state
+      msg_type: example_msgs/msg/ManipulatorState
+      qos: reliable
+      canonical_state_topic: robot/active/state
+      canonical_eef_topic: robot/active/eef_pose
+      canonical_gripper_topic: robot/active/gripper
+      state_stream_id: robot/galbot_right/state
+      eef_position_field: tcp.position[0:3]
+      eef_orientation_field: tcp.orientation_rpy[0:3]
+      gripper_field: gripper.width
+      gripper:
+        source_type: field
+        field: gripper.width
+        value_mode: continuous
+        close_rule:
+          operator: <=
+          value: 0.025
+      required: true
+
+active_streams:
+  color_image: head_color
+  robot_state: active_arm
+
+ROBOLINEAGE_bindings:
+  vsa:
+    color_image_stream: head_color
+    robot_state_stream: active_arm
+    canonical_camera_topic: camera/primary/color
+    canonical_arm_topic: robot/active/state
+  recorder:
+    default_output_dir: data/rollouts
+    camera_names:
+      - head_color
+      - left_wrist_color
+      - right_wrist_color
+  health:
+    required_streams:
+      - head_color
+      - active_arm
+
+validation:
+  checks:
+    camera_preview: true
+    eef_pose_updates: true
+    gripper_value_updates: true
+    timestamp_health: true
+  expected_min_hz:
+    head_color: 10.0
+    active_arm: 20.0

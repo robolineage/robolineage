@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/dataset_admission.schema.json",
+  "title": "RoboLineage Dataset Admission",
+  "type": "object",
+  "required": ["schema_version", "agent_version", "rollout_id", "decision", "accepted_for_training", "label_quality", "review_reason", "admission_class", "reasons", "data_use", "requires_review", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "agent_version": {"type": "string"},
+    "rollout_id": {"type": "string"},
+    "decision": {"enum": ["accepted", "needs_review", "retry_recommended", "rejected"]},
+    "accepted_for_training": {"type": "boolean"},
+    "label_quality": {"enum": ["clean", "needs_correction", "uncertain"]},
+    "review_reason": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "admission_class": {"type": "string"},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "data_use": {"type": "array", "items": {"type": "string"}},
+    "recommended_split": {"oneOf": [{"type": "null"}, {"type": "string"}]},
+    "requires_review": {"type": "boolean"},
+    "task_description": {"type": "string"},
+    "created_at": {"type": "string"}
+  }
+}

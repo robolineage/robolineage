@@ -1,0 +1,12 @@
+{
+  "schema_version": "RoboLineage.annotation_final.v1",
+  "rollout_id": "rollout_001",
+  "outcome": "failure",
+  "primary_failure_phase": "grasp_red",
+  "final_observation": {
+    "phase": "grasp_red",
+    "evidence": "The gripper closes beside the red block and the block remains on the table."
+  },
+  "needs_human_review": false,
+  "evidence_refs": ["snapshots.jsonl#2", "raw_manifest.json"]
+}

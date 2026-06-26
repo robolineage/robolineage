@@ -1,0 +1,9 @@
+{
+  "schema_version": "RoboLineage.dataset_lock.v1",
+  "dataset_id": "stack_red_on_blue_v2",
+  "version": "v2",
+  "manifest_sha256": "4b52a8d6a32b2c91f8d37c8df6d6386fcfbf59f4c501f6d29ef448a20a6a0001",
+  "accepted_rollouts": ["rollout_010", "rollout_011", "rollout_012"],
+  "excluded_rollouts": ["rollout_001"],
+  "created_at": "2026-06-03T00:00:00Z"
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "RoboLineage.failure_analysis.v1",
+  "rollout_id": "rollout_001",
+  "failure_phase": "grasp_red",
+  "failure_type": "spatial_coverage_gap",
+  "evidence": [
+    "red block is visible",
+    "gripper center is offset at close",
+    "accepted demonstrations under-cover this start region"
+  ],
+  "recommended_data_action": "collect targeted successful grasps at this start location"
+}

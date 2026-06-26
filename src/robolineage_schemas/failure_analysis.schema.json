@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/failure_analysis.schema.json",
+  "title": "RoboLineage Failure Analysis",
+  "type": "object",
+  "required": ["schema_version", "agent_version", "rollout_id", "status", "outcome", "candidate_count", "failure_events"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "agent_version": {"type": "string"},
+    "rollout_id": {"type": "string"},
+    "status": {"type": "string"},
+    "outcome": {"enum": ["success", "failure"]},
+    "candidate_count": {"type": "integer", "minimum": 0},
+    "candidate_segments": {"type": "array", "items": {"type": "object"}},
+    "failure_events": {"type": "array", "items": {"type": "object"}},
+    "retry_events": {"type": "array", "items": {"type": "object"}},
+    "recovered_count": {"type": "integer", "minimum": 0},
+    "high_risk_frames": {"type": "array", "items": {"type": "integer"}}
+  }
+}

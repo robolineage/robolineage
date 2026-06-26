@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/annotation_final.schema.json",
+  "title": "RoboLineage Final Annotation",
+  "type": "object",
+  "required": ["schema_version", "agent_version", "rollout_id", "created_at", "task", "outcome", "phase_timeline"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "agent_version": {"type": "string"},
+    "rollout_id": {"type": "string"},
+    "created_at": {"type": "string"},
+    "task": {"type": "object"},
+    "outcome": {
+      "type": "object",
+      "required": ["final_success"],
+      "additionalProperties": true,
+      "properties": {
+        "final_success": {"type": "boolean"},
+        "success_status": {"type": "string"},
+        "success_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "final_phase": {"type": "string"}
+      }
+    },
+    "phase_timeline": {"type": "array", "items": {"type": "object"}},
+    "retry_events": {"type": "array", "items": {"type": "object"}},
+    "frame_tags": {"type": "array", "items": {"type": "object"}},
+    "l1_annotation": {"oneOf": [{"type": "null"}, {"type": "object"}]}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "version_id": "1.0.0",
+  "trained_on_dataset": "v1",
+  "architecture": "diffusion_policy",
+  "training_steps": 50000,
+  "created_at": "2026-04-25T13:00:00Z",
+  "eval_success_rate": null,
+  "deployed": false,
+  "deployment_gating_result": "pending"
+}

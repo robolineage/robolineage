@@ -1,0 +1,9 @@
+{
+  "schema_version": "RoboLineage.dataset_health.v1",
+  "dataset_id": "stack_red_on_blue_v2",
+  "status": "needs_more_coverage",
+  "dominant_gap": "red block start locations outside the center bin",
+  "recommended_action": "targeted_recollection",
+  "target_count": 30,
+  "evidence_refs": ["rollout_001/failure_analysis.json"]
+}

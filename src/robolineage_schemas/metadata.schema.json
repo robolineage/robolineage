@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/metadata.schema.json",
+  "title": "RoboLineage Sample Metadata",
+  "description": "Schema for per-sample metadata.json in a RoboLineage rollout directory. See docs/artifact_contracts.md.",
+  "type": "object",
+  "required": [
+    "exportId",
+    "project",
+    "task",
+    "annotation",
+    "dataPackage",
+    "exportedAt",
+    "exportedBy",
+    "alignment"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "exportId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID; must match the containing directory name."
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "integer"},
+        "name": {"type": "string"}
+      }
+    },
+    "task": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "steps": {
+          "type": ["string", "null"],
+          "description": "Free-form phase description (legacy). Current production phase lists come from task_config and post-review annotation.final.json.l1_annotation."
+        }
+      }
+    },
+    "annotation": {
+      "type": "object",
+      "required": ["annotationId", "description", "review"],
+      "properties": {
+        "annotationId": {"type": "string"},
+        "description": {
+          "type": "object",
+          "description": "ISO language code → localized text.",
+          "propertyNames": {"pattern": "^[a-z]{2}(-[A-Z]{2})?$"},
+          "additionalProperties": {"type": "string"}
+        },
+        "review": {
+          "type": "object",
+          "required": ["score", "reviewedAt"],
+          "properties": {
+            "score": {"enum": ["S", "A", "B", "C", "D"]},
+            "comment": {"type": ["string", "null"]},
+            "errorType": {"type": ["string", "null"]},
+            "reviewedAt": {"type": "string", "format": "date-time"}
+          }
+        },
+        "l1": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/L1Annotation"}
+          ]
+        }
+      }
+    },
+    "dataPackage": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"}
+      }
+    },
+    "exportedAt": {"type": "string", "format": "date-time"},
+    "exportedBy": {
+      "type": "object",
+      "required": ["userId", "username"],
+      "properties": {
+        "userId": {"type": "integer"},
+        "username": {"type": "string"}
+      }
+    },
+    "alignment": {
+      "type": "object",
+      "required": ["referenceCam", "totalFrames", "timeAligned", "method", "frames_schema_version"],
+      "properties": {
+        "referenceCam": {"enum": ["camera_h", "camera_l", "camera_r"]},
+        "totalFrames": {"type": "integer", "minimum": 0},
+        "timeAligned": {"type": "boolean"},
+        "method": {"enum": ["frame-based", "timestamp-based"]},
+        "note": {"type": "string"},
+        "frames_schema_version": {
+          "type": "string",
+          "description": "Historical metadata alignment version. Current production raw data uses raw/rosbag2 plus raw_manifest.json; see docs/artifact_contracts.md.",
+          "pattern": "^\\d+\\.\\d+$"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "L1Annotation": {
+      "type": "object",
+      "required": ["schema_version", "annotator", "annotated_at", "phases", "goal", "success_criterion", "phase_segments"],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
+        "annotator": {
+          "type": "string",
+          "description": "Format: 'user:{username}' | 'agent:{name}@{version}' | combined with '+'."
+        },
+        "annotated_at": {"type": "string", "format": "date-time"},
+        "phases": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "subtasks": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "description", "phase_ids"],
+                "properties": {
+                  "id": {"type": "string"},
+                  "description": {"type": "string"},
+                  "phase_ids": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "goal": {"type": "string", "minLength": 1},
+        "success_criterion": {
+          "type": "object",
+          "required": ["type", "description"],
+          "properties": {
+            "type": {"enum": ["visual", "kinematic", "hybrid"]},
+            "description": {"type": "string"},
+            "visual_hints": {
+              "oneOf": [{"type": "null"}, {"type": "array", "items": {"type": "string"}}]
+            },
+            "kinematic_hints": {
+              "oneOf": [{"type": "null"}, {"type": "array", "items": {"type": "string"}}]
+            }
+          }
+        },
+        "object_roles": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            }
+          ]
+        },
+        "phase_segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["phase", "start_frame", "end_frame", "start_ts", "end_ts"],
+            "properties": {
+              "phase": {"type": "string"},
+              "start_frame": {"type": "integer", "minimum": 0},
+              "end_frame": {"type": "integer", "minimum": 0},
+              "start_ts": {"type": "number", "minimum": 0},
+              "end_ts": {"type": "number", "minimum": 0}
+            }
+          }
+        },
+        "frame_tags": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["frame_id", "tag"],
+                "properties": {
+                  "frame_id": {"type": "integer", "minimum": 0},
+                  "tag": {"type": "string"},
+                  "note": {"type": "string"}
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

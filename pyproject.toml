@@ -1,0 +1,60 @@
+[project]
+name = "robolineage-runtime"
+version = "0.1.0"
+description = "RoboLineage agent-native data lifecycle for robot collection, review, training, and deployment governance."
+requires-python = ">=3.9"
+dependencies = [
+  "h5py>=3.8",
+  "numpy>=1.24",
+  "Pillow>=10.0",
+  "opencv-python>=4.8",
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Optional dependency groups follow current runtime domains.
+contracts = [
+  "pydantic>=2",
+  "jsonschema>=4",
+]
+data-source = ["mcap>=1.2"]
+vsa = [
+  "openai>=1.0",
+]                                # Visual Snapshot Agent
+session = ["sse-starlette>=2.0"] # session SSE stream
+agents = [
+  "openai>=1.0",
+  "anthropic>=0.25",
+]                                # Master/evaluation agents
+dataset = []                    # dataset lifecycle
+train = ["pyyaml>=6.0"]         # training lifecycle
+
+# Hardware / model extras (existing, kept as-is)
+realsense = ["pyrealsense2>=2.54"]
+vlm = [
+  "transformers>=4.40",
+  "torch>=2.0",
+  "accelerate>=0.27",
+  "bitsandbytes>=0.43",
+]
+dev = [
+  "pytest>=8.0",
+  "pytest-cov",
+  "httpx>=0.27",
+  "anthropic>=0.25",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

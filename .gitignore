@@ -1,14 +1,45 @@
+﻿# Excluded directories
+data/
+logs/
+.runtime/
+
+# Local Claude Code config
+.claude/
+
+# Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.egg
+*.egg-info/
+dist/
+node_modules/
+frontend/node_modules/
+frontend/dist/
+build/
+.eggs/
+*.so
 .venv/
 venv/
-.env
-.env.*
-!.env.example
-*.log
-*.tmp
+tasks/
+env/
+.tmp/
+
+# Artifacts (large outputs)
+artifacts/
+
+# OS
 .DS_Store
 Thumbs.db
-node_modules/
-dist/
-build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets: keep .env.example in repo, never commit a real .env
+.env
+.env.local
+.env.*.local
+.venv-ros/

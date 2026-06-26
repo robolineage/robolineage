@@ -1,0 +1,135 @@
+schema_version: RoboLineage.robot_profile.v1
+robot_id: arx_one_default
+display_name: ARX One default ROS2 profile
+description: >
+  Compatibility profile generated from configs/arx_one.yaml. It captures the
+  minimal ROS2 streams RoboLineage needs for read-only collection, online VSA,
+  post-review, training selection, and deployment evaluation.
+
+connection:
+  type: ros2
+  ros_domain_id: 195
+  namespace: ""
+  spin_threads: 2
+
+capabilities:
+  read_only: true
+  policy_drive: false
+  ar_overlay: false
+
+streams:
+  color_images:
+    camera_h:
+      role: primary
+      topic: /camera/camera_h/color/image_raw/compressed
+      msg_type: sensor_msgs/msg/CompressedImage
+      transport: compressed
+      qos: sensor_data
+      canonical_topic: camera/primary/color
+      stream_id: cam/camera_h/color
+      required: true
+    camera_l:
+      role: left_aux
+      topic: /camera/camera_l/color/image_raw/compressed
+      msg_type: sensor_msgs/msg/CompressedImage
+      transport: compressed
+      qos: sensor_data
+      canonical_topic: camera/left/color
+      stream_id: cam/camera_l/color
+      required: true
+    camera_r:
+      role: right_aux
+      topic: /camera/camera_r/color/image_raw/compressed
+      msg_type: sensor_msgs/msg/CompressedImage
+      transport: compressed
+      qos: sensor_data
+      canonical_topic: camera/right/color
+      stream_id: cam/camera_r/color
+      required: true
+
+  robot_states:
+    right_arm:
+      role: active_manipulator
+      topic: /arm_master_r_status
+      msg_type: arx5_arm_msg/msg/RobotStatus
+      qos: reliable
+      decoder: arx5_robot_status_27_vec
+      canonical_state_topic: robot/active/state
+      canonical_eef_topic: robot/active/eef_pose
+      canonical_gripper_topic: robot/active/gripper
+      state_stream_id: robot/arx_r/pose
+      eef_position_field: end_pos[0:3]
+      eef_orientation_field: end_pos[3:6]
+      gripper_field: joint_pos[6]
+      gripper:
+        source_type: field
+        field: joint_pos[6]
+        value_mode: continuous
+        close_rule:
+          operator: <=
+          value: -1.0
+      gripper_value_mode: continuous
+      gripper_close_rule:
+        operator: <=
+        value: -1.0
+      required: true
+
+    left_arm:
+      role: secondary_manipulator
+      topic: /arm_master_l_status
+      msg_type: arx5_arm_msg/msg/RobotStatus
+      qos: reliable
+      decoder: arx5_robot_status_27_vec
+      canonical_state_topic: robot/secondary/state
+      canonical_eef_topic: robot/secondary/eef_pose
+      canonical_gripper_topic: robot/secondary/gripper
+      state_stream_id: robot/arx_l/pose
+      eef_position_field: end_pos[0:3]
+      eef_orientation_field: end_pos[3:6]
+      gripper_field: joint_pos[6]
+      gripper:
+        source_type: field
+        field: joint_pos[6]
+        value_mode: continuous
+        close_rule:
+          operator: <=
+          value: -1.0
+      gripper_value_mode: continuous
+      gripper_close_rule:
+        operator: <=
+        value: -1.0
+      required: false
+
+active_streams:
+  color_image: camera_h
+  robot_state: right_arm
+
+ROBOLINEAGE_bindings:
+  vsa:
+    color_image_stream: camera_h
+    robot_state_stream: right_arm
+    canonical_camera_topic: camera/primary/color
+    canonical_arm_topic: robot/active/state
+  recorder:
+    default_output_dir: data/rollouts
+    camera_names:
+      - camera_h
+      - camera_r
+  health:
+    required_streams:
+      - camera_h
+      - camera_l
+      - camera_r
+      - right_arm
+
+validation:
+  checks:
+    camera_preview: true
+    eef_pose_updates: true
+    gripper_value_updates: true
+    timestamp_health: true
+  expected_min_hz:
+    camera_h: 10.0
+    camera_l: 10.0
+    camera_r: 10.0
+    right_arm: 20.0

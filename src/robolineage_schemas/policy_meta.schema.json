@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/policy_meta.schema.json",
+  "title": "RoboLineage PolicyMeta",
+  "description": "Per-checkpoint metadata file. trained_on_dataset is bound to a single DatasetLock and must never be edited. Mirrors robolineage_contracts.pipeline.PolicyMeta. See docs/artifact_contracts.md.",
+  "type": "object",
+  "required": [
+    "version_id",
+    "trained_on_dataset",
+    "architecture",
+    "training_steps",
+    "created_at",
+    "eval_success_rate",
+    "deployed",
+    "deployment_gating_result"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version_id": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "SemVer. Major = architecture change; minor = dataset version roll; patch = same data, different seed."
+    },
+    "trained_on_dataset": {
+      "type": "string",
+      "pattern": "^v\\d+$",
+      "description": "DatasetLock.version_id this checkpoint was trained on. Immutable post-write."
+    },
+    "architecture": {
+      "type": "string",
+      "description": "Producer-defined arch label (e.g. 'diffusion_policy', 'act_v2')."
+    },
+    "training_steps": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "eval_success_rate": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "number", "minimum": 0, "maximum": 1}
+      ],
+      "description": "Filled by external eval or RoboLineage policy evaluation; null until evaluation completes."
+    },
+    "deployed": {
+      "type": "boolean",
+      "description": "True iff this policy is the active deployed checkpoint. Requires gating_result='pass'."
+    },
+    "deployment_gating_result": {
+      "enum": ["pass", "fail", "pending"]
+    },
+    "framework_name": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional host training framework name inferred or supplied by FrameworkDiscoveryAgent."
+    },
+    "framework_type": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional coarse framework label such as generic, act_like, vla_like, diffusion_policy or lerobot."
+    },
+    "adapter_version": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional RoboLineage framework adapter version."
+    },
+    "checkpoint_path": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional resolved checkpoint path chosen from the host framework output."
+    },
+    "training_result_path": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional path to RoboLineage's structured framework training result artifact."
+    },
+    "eval_result_path": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional path to the host framework eval result artifact."
+    },
+    "ROBOLINEAGE_context_path": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string"}
+      ],
+      "description": "Optional path to RoboLineage context linking this checkpoint back to post-review, dataset and framework artifacts."
+    }
+  }
+}

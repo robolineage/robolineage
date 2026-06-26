@@ -1,0 +1,18 @@
+{
+  "schema_version": "RoboLineage.raw_manifest.v1",
+  "rollout_id": "rollout_001",
+  "task_id": "stack_red_on_blue",
+  "robot_profile": "arx_one_default",
+  "raw_root": "raw/rosbag2",
+  "streams": {
+    "camera_main": {
+      "topic": "/camera/color/image_raw/compressed",
+      "message_type": "sensor_msgs/msg/CompressedImage"
+    },
+    "eef_state": {
+      "topic": "/robot/eef_state",
+      "message_type": "geometry_msgs/msg/PoseStamped"
+    }
+  },
+  "content_hash": "sha256:example-raw-rollout"
+}

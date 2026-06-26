@@ -1,0 +1,6 @@
+{
+  "schema_version": "RoboLineage.deployment_decision.v1",
+  "policy_id": "stack_red_on_blue_dp_v2",
+  "decision": "collect_more_data",
+  "reason": "Success improved, but premature release remains the dominant failure."
+}

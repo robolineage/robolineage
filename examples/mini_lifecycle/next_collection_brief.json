@@ -1,0 +1,7 @@
+{
+  "schema_version": "RoboLineage.next_collection_brief.v1",
+  "task_id": "stack_red_on_blue",
+  "recommended_mode": "targeted_recollection",
+  "target_count": 30,
+  "operator_brief": "Collect centered pre-release placement examples and short bounded-dwell release variants."
+}

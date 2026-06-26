@@ -1,0 +1,106 @@
+﻿# RoboLineage ARX-One adapter config (robot-workstation view)
+#
+# - Keep topic names aligned with the external collection repository data/config.yaml; if that external config
+#   changes topic names without updating this file, RoboLineage will not subscribe correctly.
+# - Deployment notes are in docs/deployment/README.md.
+# - This file is intended for a Linux + ROS2 robot workstation.
+
+rollout:
+  task_id: arx_one_default
+  operator_id: robolineage_default
+  mode: C1
+
+robot_profile_path: robot_profiles/arx_one_default.yaml
+
+adapter:
+  type: ros2_profile
+  ros_domain_id: 195
+  spin_threads: 2
+  master_overlay_topic: robot/arx_master/command
+
+cameras_ros2:
+  camera_h:
+    topic: /camera/camera_h/color/image_raw/compressed
+    transport: compressed
+    qos: sensor_data
+    stream_id: cam/camera_h/color
+    camera_name: camera_h
+  camera_l:
+    topic: /camera/camera_l/color/image_raw/compressed
+    transport: compressed
+    qos: sensor_data
+    stream_id: cam/camera_l/color
+    camera_name: camera_l
+  camera_r:
+    topic: /camera/camera_r/color/image_raw/compressed
+    transport: compressed
+    qos: sensor_data
+    stream_id: cam/camera_r/color
+    camera_name: camera_r
+
+
+arms_ros2:
+  arx_l:
+    slave_status: /arm_master_l_status
+    state_stream_id: robot/arx_l/pose
+    qos: reliable
+    master_command: /arm_master_l_status
+    msg_type: arx5_arm_msg/msg/RobotStatus
+    decoder: arx5_robot_status_27_vec
+  arx_r:
+    slave_status: /arm_master_r_status
+    state_stream_id: robot/arx_r/pose
+    qos: reliable
+    master_command: /arm_master_r_status
+    msg_type: arx5_arm_msg/msg/RobotStatus
+    decoder: arx5_robot_status_27_vec
+
+recorder:
+  output_dir: data/rollouts
+  camera_names: [camera_h, camera_r]
+
+# v0.2.0+ Phase 5 - operator-tunable sections. Missing fields fall back to code defaults.
+# See configs/README.md for field meanings and tuning notes.
+
+services:
+  data_source: true       # ROS2 profile adapter supervision
+  session: true           # FastAPI control plane + AR /mjpeg
+  vsa: true               # enable realtime VSA; episodes are triggered by the frontend start-rollout action
+  health_check: true      # /health endpoint used by service supervision
+
+tuning:
+  ring_capacity: 120              # FrameRingBuffer capacity; 30Hz x 4s
+  still_threshold: 3e-4           # motion_energy_avg < threshold for stillness
+  still_min_frames: 25            # consecutive still frames before still_start
+  gripper_close_threshold: -1.0   # gripper value at or below this is treated as closed
+  rotation_weight: 0.2            # rotation weight in motion energy
+  smoothing_window: 10            # motion-energy smoothing window
+  motion_resume_threshold: 8e-4   # motion-resume threshold
+  context_frames: 15              # context frames around each event
+  max_keyframes: 3                # maximum keyframes per event sent to VLM
+  idle_timeout: 10.0              # run_ros_topic_stream seconds without data before exit
+  periodic_interval_sec: 2.0      # periodic VSA observation interval; action events trigger additionally
+  heartbeat_interval: 5.0         # slow fallback and health observation interval
+  merge_window_sec: 1.0           # merge nearby gripper, contact, and coverage events to reduce duplicate VLM calls
+  final_settle_sec: 1.0           # settle window after gripper_open for release_settle final observations
+  max_vlm_windows_per_rollout: null # maximum VLM windows per rollout; null means unlimited
+  vlm_workers: 1                  # online VSA enforces linear VLM calls; field kept for compatibility
+  strong_prior_margin: 0.35       # PhaseFusion prior margin for overriding VLM
+  prior_sticky_frames: 2          # prior must point to the same phase for N frames before switching
+
+vsa:
+  camera_topic: /camera/camera_h/color/image_raw/compressed
+  arm_topic: /arm_master_r_status
+  task_config_path: null              # null = wait for the frontend task description before starting VSA
+  output_jsonl_path: null             # null creates <recorder.output_dir>/<episode_id>/snapshots.jsonl per rollout
+  max_events: null                    # null = run until idle_timeout or SIGINT; set N for debugging
+
+vlm:
+  # Model / key / endpoint: .env file (VSA_VLM_* / TASK_LLM_*).
+  # Only latency tunables live here; override per-deployment via .env:
+  #   VSA_VLM_TIMEOUT / VSA_VLM_MAX_TOKENS
+  timeout: 20.0
+  max_output_tokens: 256
+health:
+  port: 8081                          # independent /health port
+  bind: 0.0.0.0                       # use 127.0.0.1 for localhost-only access

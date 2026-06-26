@@ -1,0 +1,49 @@
+﻿# Example config for: one ARX-One arm, three Intel RealSense D435/D455 cameras, one serial IMU.
+# Edit serials, ports, and CAN interface names for your robot workstation before running.
+
+rollout:
+  task_id: demo_task
+  operator_id: op_001
+
+sync_groups:
+  - name: main
+    backend: realsense_inter_cam
+    master: camera_h       # head camera drives the trigger
+    slaves: [camera_l, camera_r]
+
+cameras:
+  camera_h:
+    type: realsense
+    serial: "REPLACE_WITH_SERIAL"
+    resolution: [1280, 720]
+    fps: 30
+    depth: true
+  camera_l:
+    type: realsense
+    serial: "REPLACE_WITH_SERIAL"
+    resolution: [1280, 720]
+    fps: 30
+    depth: false
+  camera_r:
+    type: realsense
+    serial: "REPLACE_WITH_SERIAL"
+    resolution: [1280, 720]
+    fps: 30
+    depth: false
+
+# robots and imu adapter types below are placeholders; adapters for them
+# ship in a later milestone (M3). Leaving them here documents the intent.
+# robots:
+#   arx_left:
+#     type: arx_one
+#     poll_rate: 200
+#     can_bus: can1
+#
+# imu:
+#   main:
+#     type: serial
+#     port: /dev/ttyUSB0
+#     rate: 200
+
+recorder:
+  output_dir: data/rollouts

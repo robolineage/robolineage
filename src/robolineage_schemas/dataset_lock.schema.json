@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://RoboLineage.local/schemas/dataset_lock.schema.json",
+  "title": "RoboLineage DatasetLock",
+  "description": "Immutable freeze-point for a dataset version. Once written, never modified. Mirrors robolineage_contracts.pipeline.DatasetLock. See docs/artifact_contracts.md.",
+  "type": "object",
+  "required": [
+    "version_id",
+    "created_at",
+    "base_version_id",
+    "included_rollout_ids",
+    "total_samples",
+    "manifest_sha256",
+    "changelog"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version_id": {
+      "type": "string",
+      "pattern": "^v\\d+$",
+      "description": "v1, v2, ... monotonic integer suffix."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "base_version_id": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^v\\d+$"}
+      ],
+      "description": "Parent version; null for v1."
+    },
+    "included_rollout_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true,
+      "description": "Sorted list of rollout_ids included in this version."
+    },
+    "total_samples": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA256 hex of the canonicalised train_manifest.jsonl entries (sorted by rollout_id, then sort_keys=True, utf-8)."
+    },
+    "changelog": {
+      "type": "string",
+      "description": "Human-readable summary of what's new in this version."
+    }
+  }
+}

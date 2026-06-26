@@ -1,14 +1,14 @@
-# Reproducibility Scope
+# Reproducibility Boundary
 
 RoboLineage separates artifact-level reproduction from hardware-level
 reproduction.
 
 ## Artifact-Level Reproduction
 
-The public interface exposes schemas, prompt contracts, example artifacts, and
-figures. These materials are intended to make the artifact contract inspectable
-without requiring private robot videos, local network settings, or lab-specific
-robot workstations.
+The public release exposes runtime code, schemas, prompt contracts, example
+artifacts, figures, and lightweight checks. These materials make the lifecycle
+contract inspectable without requiring private robot videos, local network
+settings, or lab-specific robot workstations.
 
 ## Semantic-Agent Reproduction
 

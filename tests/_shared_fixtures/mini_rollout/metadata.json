@@ -1,0 +1,43 @@
+{
+  "exportId": "027b72ff-aaaa-bbbb-cccc-000000000001",
+  "project": {
+    "id": 1,
+    "name": "ROBOLINEAGE_demo"
+  },
+  "task": {
+    "id": 98,
+    "name": "grasp_cube",
+    "steps": "approach → grasp → lift → place"
+  },
+  "annotation": {
+    "annotationId": "ann-mini-001",
+    "description": {
+      "zh-CN": "pick up the cube and place it in the container",
+      "en-US": "Grasp the cube and place it into the container"
+    },
+    "review": {
+      "score": "A",
+      "comment": "clean rollout, used as fixture",
+      "errorType": null,
+      "reviewedAt": "2026-04-25T10:05:00Z"
+    },
+    "l1": null
+  },
+  "dataPackage": {
+    "id": "pkg-fixture-1",
+    "name": "shared_fixture_pack"
+  },
+  "exportedAt": "2026-04-25T10:00:00Z",
+  "exportedBy": {
+    "userId": 1,
+    "username": "fixture_owner"
+  },
+  "alignment": {
+    "referenceCam": "camera_h",
+    "totalFrames": 30,
+    "timeAligned": true,
+    "method": "frame-based",
+    "note": "synthetic fixture for robolineage_contracts cross-domain tests",
+    "frames_schema_version": "1.0"
+  }
+}

@@ -1,0 +1,59 @@
+# 所有文本文件统一使用 LF
+* text=auto eol=lf
+
+# 明确标记为文本的格式
+*.py      text eol=lf
+*.ts      text eol=lf
+*.vue     text eol=lf
+*.js      text eol=lf
+*.css     text eol=lf
+*.scss    text eol=lf
+*.html    text eol=lf
+*.md      text eol=lf
+*.txt     text eol=lf
+*.rst     text eol=lf
+*.yaml    text eol=lf
+*.yml     text eol=lf
+*.toml    text eol=lf
+*.json    text eol=lf
+*.jsonl   text eol=lf
+*.csv     text eol=lf
+*.sh      text eol=lf
+*.ini     text eol=lf
+*.cfg     text eol=lf
+*.xml     text eol=lf
+*.svg     text eol=lf
+*.pyi     text eol=lf
+*.pyx     text eol=lf
+*.pxd     text eol=lf
+
+# Windows 脚本保留 CRLF
+*.ps1     text eol=crlf
+*.bat     text eol=crlf
+*.cmd     text eol=crlf
+
+# 二进制文件，不做任何转换
+*.h5      binary
+*.hdf5    binary
+*.npy     binary
+*.npz     binary
+*.pkl     binary
+*.pth     binary
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.mp4     binary
+*.avi     binary
+*.mov     binary
+*.pdf     binary
+*.pptx    binary
+*.gz      binary
+*.zip     binary
+*.tar     binary
+*.so      binary
+*.dylib   binary
+*.exe     binary
+*.pem     binary
+*.fits    binary
+*.pyc     binary

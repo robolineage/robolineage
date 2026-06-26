@@ -1,0 +1,47 @@
+name: diffusion_policy_workspace
+framework_type: diffusion_policy
+adapter_version: "0.2"
+repo_root: /path/to/diffusion-policy/repository
+
+staging:
+  selected_rollouts_file: "{staging_dir}/selected_rollouts.json"
+
+dataset_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - tools/convert_robolineage_rollouts.py
+    - --manifest
+    - "{selected_rollouts_file}"
+    - --output
+    - "{dataset_output}"
+
+train_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - train.py
+    - --config-name
+    - task_config
+    - task.dataset_path="{dataset_output}"
+    - training.output_dir="{checkpoint_dir}"
+
+eval_command:
+  cwd: "{repo_root}"
+  args:
+    - python
+    - eval.py
+    - --checkpoint
+    - "{checkpoint_path}"
+    - --output
+    - "{eval_output}"
+
+outputs:
+  checkpoint_glob: "{checkpoint_dir}/checkpoints/*.ckpt"
+  train_log: "{checkpoint_dir}/logs/train.log"
+  eval_result: "{eval_output}/metrics.json"
+
+log_patterns:
+  epoch: "epoch=(\\d+)"
+  loss: "loss=([0-9.]+)"
+  success_rate: "success_rate=([0-9.]+)"

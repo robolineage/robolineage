@@ -1,0 +1,145 @@
+﻿# Per-path ownership table. Single source for `scripts/check_ownership.py`.
+#
+# How matching works:
+#   - rules[*].path is a path PREFIX (relative to repo root).
+#   - The check script picks the LONGEST matching prefix; ties (same length)
+#     are an error and abort the check.
+#   - Files matching `shared` patterns are considered jointly owned by
+#     multiple domains and are exempt from the single-owner rule. They still
+#     follow AGENTS.md conventions (Companion .md rule etc.) but the check
+#     does not flag domains for editing them.
+#
+# Rule of thumb: if a path is owned by exactly one plan, list it under
+# `rules`. If it's a config / metadata file that any plan may touch in
+# their own commits, list it under `shared`.
+#
+# Owners use short stable codes so CI and local checks can filter diffs:
+#   H - contracts, schemas, unified runtime, frontend, repo tooling
+#   A - robot profile, data source, adapters, recorder, configs
+#   B - Visual Snapshot Agent
+#   C - session service and AR overlay
+#   D - Master Agent and deployment evaluation/governance
+#   E - L1 annotation compatibility layer
+#   F - dataset lifecycle
+#   G - post-rollout review and training lifecycle
+
+rules:
+  # -- H (contracts + integration) ---------------------------------------
+  - path: src/robolineage_contracts/
+    owner: H
+  - path: src/robolineage_schemas/
+    owner: H
+  - path: src/robolineage_shared_agents/
+    owner: H
+  - path: tests/_shared_fixtures/
+    owner: H
+  - path: tests/robolineage_contracts/
+    owner: H
+  - path: tests/robolineage_schemas/
+    owner: H
+  - path: tests/robolineage_shared_agents/
+    owner: H
+  - path: tests/scripts/
+    owner: H
+  - path: scripts/check_ownership.py
+    owner: H
+  - path: scripts/check_contracts_imports.py
+    owner: H
+  - path: scripts/OWNERSHIP.yaml
+    owner: H
+  - path: run.sh
+    owner: H
+  # Unified launcher + health endpoint.
+  - path: src/robolineage_app/
+    owner: H
+  - path: tests/robolineage_app/
+    owner: H
+  - path: frontend/
+    owner: H
+
+  # -- A (robot + data source) -------------------------------------------
+  - path: src/robolineage_data_source/
+    owner: A
+  - path: src/robolineage_robot/
+    owner: A
+  - path: tests/robolineage_data_source/
+    owner: A
+  - path: tests/robolineage_robot/
+    owner: A
+  - path: scripts/data_source/
+    owner: A
+  - path: configs/
+    owner: A
+  - path: robot_profiles/
+    owner: A
+
+  # -- B (VSA) -----------------------------------------------------------
+  - path: src/robolineage_shared_agents/visual_snapshot/
+    owner: B
+  - path: tests/visual_snapshot/
+    owner: B
+  - path: scripts/vsa_streaming.py
+    owner: B
+  - path: scripts/vsa_rehearsal_single_host.py
+    owner: B
+
+  # -- C (session + AR) --------------------------------------------------
+  - path: src/robolineage_session/
+    owner: C
+  - path: src/robolineage_ar/
+    owner: C
+  - path: tests/robolineage_session/
+    owner: C
+  - path: tests/ar/
+    owner: C
+  - path: scripts/session_smoke.py
+    owner: C
+
+  # -- D (Master + evaluation/governance) --------------------------------
+  - path: src/robolineage_shared_agents/master/
+    owner: D
+  - path: src/robolineage_eval/
+    owner: D
+  - path: tests/robolineage_shared_agents_master/
+    owner: D
+  - path: tests/robolineage_eval/
+    owner: D
+
+  # -- F (dataset lifecycle) ---------------------------------------------
+  - path: src/robolineage_dataset/
+    owner: F
+  - path: tests/robolineage_dataset/
+    owner: F
+
+  # -- G (post-review + training lifecycle) ------------------------------
+  - path: src/robolineage_post_rollout/
+    owner: G
+  - path: src/robolineage_train/
+    owner: G
+  - path: tests/robolineage_post_rollout/
+    owner: G
+  - path: tests/robolineage_train/
+    owner: G
+
+# Shared paths - multiple domains may edit these in their own PRs without
+# violating the single-owner rule. The check script SKIPS these for the
+# --expected-owner check.
+shared:
+  - AGENTS.md
+  - README.md                  # repo-root README, jointly maintained
+  - pyproject.toml
+  - .gitignore
+  - .markdownlint.json
+  - .editorconfig
+  - .gitattributes
+  - .nvmrc
+  - cyclonedds.xml
+  - .env.example               # placeholder template, never holds real values
+  - scripts/README.md          # each plan appends its own script entries
+  - tests/__init__.py          # top-level test package marker, no plan owns it
+  - slides/                    # generated deck assets/scripts
+  # docs are jointly authored / appended
+  - doc/
+  - docs/
+  - examples/
+  # WIP branches don't go through check
