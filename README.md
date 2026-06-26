@@ -15,7 +15,7 @@ iteration traceable across time.
 [PDF](https://arxiv.org/pdf/2606.22142)
 
 <p align="center">
-  <img src="assets/figures/fig1.png" alt="RoboLineage teaser" width="680">
+  <img src="assets/figures/fig1.png" alt="RoboLineage teaser" width="600">
 </p>
 
 ## Core Idea
